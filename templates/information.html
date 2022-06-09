@@ -1,0 +1,163 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>README</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='default.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='fonts.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <article class="page mono">
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><a href="#">Serach For SEO :)</a></h1>
+                </div>
+                <div id="menu">
+                    <ul>
+
+                        <li><a href="graph" accesskey="2" title="">Graph</a></li>
+                        <li class="current_page_item"><a href="#" accesskey="3" title="">ReadMe</a></li>
+                        <li><a href="sub" accesskey="4" title="">google 搜尋建議</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <h3 id='example_click'>資料說明
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+            </h3>
+
+            <div style='display: none' id='example_data'>
+                <ul class="bulleted-list">
+                    <li>此版本詞彙經過以下篩選
+                        <ul class="bulleted-list">
+                            <li>需出現在該篇網站次數大於2次</li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="bulleted-list">
+                    <li>此版本網址經過以下篩選
+                        <ul class="bulleted-list">
+                            <li>爬取&quot;益生菌&quot;第一頁至第十頁網站</li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>不包含購物網站</li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>爬取總篇數，共計59篇</li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="bulleted-list">
+                    <li><span class="highlight-red">後續說明欄位定義</span>
+                        <ul class="bulleted-list">
+                            <li>篇數(article)：以<span class="highlight-red">單篇</span>文章為單位，數量區間即為 1~100 </li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>次數(count_sum)：該詞彙出現的<span class="highlight-red">次數</span>，數量區間即為 3~無限</li>
+                        </ul>
+                        <ul id="f6786289-fb00-4926-b9a4-2be6f2efbaea" class="bulleted-list">
+                            <li>頁數(rank_page)：以Google搜尋結果<span class="highlight-red">頁數</span>為單位(第一頁至第十頁)，數量區間為 1~10
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+            <h3 id="size_click">
+                節點大小及粗細
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                    </svg>
+
+            </h3>
+            <div id="size_data" style='display: none'>
+                <ul class="bulleted-list">
+                    <li>節點大小:該詞彙出現的網站總篇數</li>
+                </ul>
+                <ul class="bulleted-list">
+                    <li>關聯粗細:該詞彙在該頁出現的總次數</li>
+                </ul>
+
+            </div>
+
+            <h3 id="node_click">游標指向節點及邊出現的文字
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                    </svg>
+            </h3>
+            <div id="node_data" style='display: none'>
+                <ul class="bulleted-list">
+                    <li><span>節點(表示詞彙時)</span>
+                        <ul class="bulleted-list">
+                            <li>name:該詞彙</li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>篇數數量:總共出現的篇數</li>
+                        </ul>
+                        <ul id="f6786289-fb00-4926-b9a4-2be6f2efbaea" class="bulleted-list">
+                            <li>頁數數量:總共出現的頁數</li>
+                        </ul>
+                    </li>
+                    <li><span>節點(表示頁數時)</span>
+                        <ul class="bulleted-list">
+                            <li>name:該頁</li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>篇數數量:該頁被爬取的數量</li>
+                        </ul>
+                    </li>
+                    <li><span>邊</span>
+                        <ul class="bulleted-list">
+                            <li>出現次數:詞彙在該頁出現的總次數</li>
+                        </ul>
+                        <ul class="bulleted-list">
+                            <li>平均tdidf值:詞彙在該頁的平均tfidf值</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+            <h3 id="line_click">可篩選欄位
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                    </svg>
+            </h3>
+            <div id="line_data" style='display: none'>
+                <ul class="bulleted-list">
+                    <li><span class="highlight-red">所有欄位皆可同時使用，篩選方向:文字、數值、頁數</span></li>
+                </ul>
+            </div>
+
+
+        </div>
+    </article>
+    <script>
+        $(document).ready(function() {
+            $("#example_click").click(function() {
+                $("#example_data").fadeToggle();
+            });
+            $("#size_click").click(function() {
+                $("#size_data").fadeToggle();
+            });
+            $("#node_click").click(function() {
+                $("#node_data").fadeToggle();
+            });
+            $("#line_click").click(function() {
+                $("#line_data").fadeToggle();
+            });
+
+
+        });
+    </script>
+</body>
+
+
+</html>

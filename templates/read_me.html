@@ -1,0 +1,650 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='default.css') }}">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='fonts.css') }}">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>README</title><style>
+
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body>
+	<div id="header-wrapper">
+        <div id="header" class="container">
+            <div id="logo">
+                <h1><a href="#">Serach For SEO :)</a></h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li class="current_page_item"><a href="" accesskey="2" title="">Graph</a></li>
+                    <li><a href="readme" accesskey="3" title="">ReadMe</a></li>
+                    <li><a href="sub" accesskey="4" title="">google 搜尋建議</a></li>
+                </ul>
+            </div>
+        </div>
+	</div>
+	<article id="dcc164d2-89e5-4ad0-8094-2fb086d48b1a" class="page mono"><header><h1 class="page-title">README</h1></header><div class="page-body"><nav id="98589c12-c422-498e-9720-0f295009d8da" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#18250a9f-c27b-4d01-b4ad-fc9a1dc7892f">資料說明</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#47b2db75-c6ef-4730-8dd3-04755d4d4d07">節點大小及粗細</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#e6a7240c-fe15-427f-a2b8-a8b5cec251d8">游標指向節點及邊出現的文字</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#fbc8686b-bd8f-49c6-a953-75c2d5b041e1">可篩選欄位</a></div></nav><h3 id="18250a9f-c27b-4d01-b4ad-fc9a1dc7892f" class="">資料說明</h3><ul id="3b513eba-f06d-4142-994d-82917db94f38" class="bulleted-list"><li>此版本詞彙經過以下篩選<ul id="610847d8-ecf8-44f3-951e-1fd6ced25fa1" class="bulleted-list"><li>需出現在該篇網站次數大於2次</li></ul></li></ul><ul id="6f0fc355-0f20-4947-afd0-9a8628818db4" class="bulleted-list"><li>此版本網址經過以下篩選<ul id="948517fc-2fff-41e6-a3f8-eee8b693e66b" class="bulleted-list"><li>爬取&quot;益生菌&quot;第一頁至第十頁網站</li></ul><ul id="345a9d4a-e346-4632-984f-d336e0bda87a" class="bulleted-list"><li>不包含購物網站</li></ul><ul id="aff647b9-0f88-4e06-94c8-73d90009ac41" class="bulleted-list"><li>爬取總篇數，共計48篇</li></ul></li></ul><div id="b29739da-ffa5-45af-a97e-de0101292a18" class="column-list"><div id="92a18bb6-a8db-47e9-a04a-852b4dd25042" style="width:20.833333333333332%" class="column"><ul id="97e42a29-559b-4924-a91d-b0c03cd37a1b" class="bulleted-list"><li>每頁篇數統計</li></ul><p id="e875d693-b382-4c4d-9d5c-f357bb16a218" class="">
+</p></div><div id="538f0216-1c31-4813-bce2-561d95e4bd8a" style="width:12.5%" class="column"><p id="b9ad8047-15cf-4af2-9b4c-784d2bf683f5" class="">1 → 9</p><p id="1b9e3c80-9414-4f85-9f7a-a49b83034710" class="">6 → 2</p></div><div id="b26b6771-073a-485d-9718-8bade4b2bcd0" style="width:16.66666666666667%" class="column"><p id="3300db14-42d5-4229-b653-5f19fe91a841" class="">2 → 4</p><p id="49b71de6-a77f-4184-92ed-e6de7f68ef0f" class="">7 → 2</p></div><div id="37dbc7c0-570e-4a73-9fc1-eaf29a508581" style="width:16.666666666666668%" class="column"><p id="46a9b8ff-abea-4c6f-ba92-b9b742964310" class="">3 → 4</p><p id="0a1d7256-3c55-481d-a9b8-6d16945c4e88" class="">8 → 6</p></div><div id="cf43b14b-445f-4bc9-8bb0-b6b09c82fe36" style="width:16.666666666666668%" class="column"><p id="a7a2a825-7bf0-4064-8013-39c26a5b1c1e" class="">4 → 6</p><p id="e5e41b4e-16eb-4008-95ed-6a86969727ac" class="">9 → 7</p></div><div id="b1306cb6-1647-414d-8dc7-ec11450ea521" style="width:16.666666666666664%" class="column"><p id="22310f06-2c03-4781-b578-ac9b24fd8d77" class="">5 → 3</p><p id="1880f715-0c6b-4dc5-a657-7dc35ff41f2e" class="">10 → 8</p><p id="8c55322d-78cf-49ad-8e27-eb2f56385fb3" class="">
+</p></div></div><ul id="33f3d709-0456-4639-bd7e-fa9395f05a92" class="bulleted-list"><li><mark class="highlight-red">後續說明欄位定義</mark><ul id="2e0c7e2e-2c6b-4d39-a77f-4a230d6efd89" class="bulleted-list"><li>篇數(article)：以<mark class="highlight-red">單篇</mark>文章為單位，數量區間即為 1~100 </li></ul><ul id="e1ca81ba-c2ed-4fa5-8e3d-ec7aa1d18de3" class="bulleted-list"><li>次數(count_sum)：該詞彙出現的<mark class="highlight-red">次數</mark>，數量區間即為 3~無限</li></ul><ul id="f6786289-fb00-4926-b9a4-2be6f2efbaea" class="bulleted-list"><li>頁數(rank_page)：以Google搜尋結果<mark class="highlight-red">頁數</mark>為單位(第一頁至第十頁)，數量區間為 1~10</li></ul></li></ul><h3 id="47b2db75-c6ef-4730-8dd3-04755d4d4d07" class="">節點大小及粗細</h3><ul id="b3a85149-9d7d-48c5-94d5-0d4a67688f2a" class="bulleted-list"><li>節點大小:該詞彙出現的網站總篇數</li></ul><ul id="dd576ec5-97c7-441b-be17-010317f51795" class="bulleted-list"><li>關聯粗細:該詞彙在該頁出現的總次數</li></ul><h3 id="e6a7240c-fe15-427f-a2b8-a8b5cec251d8" class="">游標指向節點及邊出現的文字</h3><ul id="9af801c0-13af-4a5c-9d64-41b33f72f796" class="bulleted-list"><li>節點(表示詞彙時)<ul id="0ebb1c4d-469e-4ab6-ad15-48046f38401d" class="bulleted-list"><li>name:該詞彙</li></ul><ul id="30c0bb34-6f23-485d-9d1d-0a2ae2058f79" class="bulleted-list"><li>篇數數量:總共出現的篇數</li></ul><ul id="2e0742e4-f9f6-4fbe-a0fb-45136c09def5" class="bulleted-list"><li>頁數數量:總共出現的頁數</li></ul><ul id="eff590ab-ed68-4672-ad74-b1b8e08e3b2c" class="toggle"><li><details open=""><summary>example</summary><p id="b36ab31e-35b6-44c6-86bf-197694352336" class="">表示益生菌在十頁中每一頁都有出現過，出現48個網站中</p><figure id="3233d540-9c44-4e89-97a5-a2d855fb60af" class="image"><a href="static/pic/Untitled.png"><img style="width:288px" src="static/pic/Untitled.png"/></a></figure></details></li></ul></li></ul><ul id="ee98ab9c-c391-49d0-8f81-41ffcbae378e" class="bulleted-list"><li>節點(表示頁數時)<ul id="e3d70c7d-047c-4721-8210-8c92ad6efa5c" class="bulleted-list"><li>name:該頁</li></ul><ul id="f3263531-835b-4291-a8c8-ea4f1de59c87" class="bulleted-list"><li>篇數數量:該頁被爬取的數量</li></ul><ul id="63f572e6-0bd0-4ca9-9ecf-085c5ec828a5" class="toggle"><li><details open=""><summary>example</summary><p id="294c7aed-c4d0-4422-b0d8-2d97d2e954f1" class="">第四頁總共有6篇網站的資料</p><figure id="a55fc121-ed0d-4680-94c8-872fd713ddcb" class="image"><a href="static/pic/Untitled%201.png"><img style="width:192px" src="static/pic/Untitled%201.png"/></a></figure></details></li></ul></li></ul><ul id="74668c0b-6a98-4147-889c-3e7ab47e7cf2" class="bulleted-list"><li>邊<ul id="e930dad5-5d40-4051-8cee-479ca871370b" class="bulleted-list"><li>出現次數:詞彙在該頁出現的總次數</li></ul><ul id="ec4fc2ff-52fa-49f6-aa46-79710ca86470" class="bulleted-list"><li>平均tdidf值:詞彙在該頁的平均tfidf值</li></ul><ul id="1e90e0af-63c1-4e9f-9968-855ee9e99e1c" class="toggle"><li><details open=""><summary>example</summary><p id="6b0006e1-bf22-41e5-a796-2a70cd7acd53" class="">益生菌在排名第十頁中，出現181次且在這頁的tfidf平均值為0.006</p><figure id="fefe2a02-1a06-4153-a92d-bb53e00ead50" class="image"><a href="static/pic/Untitled%202.png"><img style="width:480px" src="static/pic/Untitled%202.png"/></a></figure></details></li></ul></li></ul><h3 id="fbc8686b-bd8f-49c6-a953-75c2d5b041e1" class="">可篩選欄位</h3><ul id="7aca1176-4fc6-40c8-aa33-bf34049c4756" class="bulleted-list"><li><mark class="highlight-red">所有欄位皆可同時使用</mark>，篩選方向:文字、數值、頁數<figure id="4d091191-761a-440f-bf25-abe90bd99cd5" class="image"><a href="static/pic/Untitled%203.png"><img style="width:1896px" src="static/pic/Untitled%203.png"/></a></figure></li></ul><ul id="1ce7ee58-9c4a-49e9-a658-baf3d7a696d0" class="bulleted-list"><li>文字<ul id="0d1819a3-31c1-42ce-a756-5c6b30a96fa7" class="bulleted-list"><li>精確模式:只搜尋該詞彙<ul id="c50b4b0b-7332-481f-ba50-667d2d9fad56" class="bulleted-list"><li>若想同時尋找多個詞彙，以空格區隔</li></ul><ul id="ccaedb97-a42d-4ea6-9e8f-a7426262fcf4" class="bulleted-list"><li>ex:想搜尋益生菌及益生質則輸入:<code>益生菌 益生質</code></li></ul><ul id="fac2e65c-6288-43b6-92c8-7758003f6481" class="toggle"><li><details open=""><summary>點擊展開範例結果</summary><figure id="bd264aec-48b8-4e44-aeb7-a8345de558e9" class="image"><a href="static/pic/Untitled%204.png"><img style="width:480px" src="static/pic/Untitled%204.png"/></a></figure></details></li></ul></li></ul><ul id="4843eede-140f-4043-86f2-6de11f14ac8b" class="bulleted-list"><li>模糊比對:包含該詞的所有詞彙<ul id="339b75cb-40a4-4146-8ca7-67b3e1bf5493" class="bulleted-list"><li>若想同時尋找多個詞彙，以空格區隔</li></ul><ul id="d1b954d9-71d7-446c-abb7-15a0ce14d5b1" class="bulleted-list"><li>ex:想搜尋<strong>含有益生菌</strong>詞彙或<strong>含有腸胃</strong>詞彙則輸入:<code>益生菌 腸胃</code></li></ul><ul id="6189cdf7-2842-4cac-8cd2-42307549e7d2" class="toggle"><li><details open=""><summary>點擊展開範例結果</summary><figure id="248b8724-69c8-4d67-9351-6c4f630a9157" class="image"><a href="static/pic/Untitled%205.png"><img style="width:480px" src="static/pic/Untitled%205.png"/></a></figure></details></li></ul></li></ul></li></ul><ul id="8e2fe536-dc82-4cf6-91cf-047af03de9ce" class="bulleted-list"><li>數值<ul id="e3c9f38a-4679-4228-841b-46de861200f4" class="bulleted-list"><li>節點大小:滑動拉霸，查看數值選擇範圍</li></ul><ul id="bce97ec8-857a-449a-811f-fd54ce695b83" class="bulleted-list"><li>邊粗細:滑動拉霸，查看數值選擇範圍</li></ul><ul id="5fb22446-52f0-42ee-bc7c-88b51c8f1c95" class="bulleted-list"><li>TF-IDF:輸入百分比條件<ul id="ebd1eb54-66a7-46fd-9a37-5d6ca59ff628" class="bulleted-list"><li>以符號及數字區隔</li></ul><ul id="06728df0-2d54-40b4-99ed-dfd32bc80277" class="bulleted-list"><li>ex:想搜尋大於tfidf中位數則輸入:<code>&gt; 0.5</code></li></ul><ul id="416b108f-cd2c-406a-b179-7fb8a2899eb2" class="toggle"><li><details open=""><summary>點擊展開範例結果</summary><figure id="9d6af48a-dd77-46d2-b362-4948dcdbd981" class="image"><a href="static/pic/Untitled%206.png"><img style="width:432px" src="static/pic/Untitled%206.png"/></a></figure></details></li></ul></li></ul></li></ul><ul id="994872c4-a3df-485b-a8c6-5295a433df0c" class="bulleted-list"><li>頁數<ul id="399a2376-c1e9-4122-b419-d77a95107ac8" class="bulleted-list"><li>利用勾選方式，選擇要比對的頁數</li></ul></li></ul><p id="ba20aaa2-eb5f-497a-ba51-808f5c55f3a7" class="">
+</p><p id="9a55adcc-10e8-418e-b5ff-1315264318df" class="">
+</p><p id="e47e80b3-bc0f-45f5-8fa7-48f53ad8ca00" class="">
+</p></div></article></body></html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+        
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='default.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='fonts.css') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+
+    <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111">
+
+    <title>radial-tidy-tree</title>
+
+    <style>
+        .node circle {
+            fill: #999;
+        }
+        
+        .node text {
+            font: 10px sans-serif;
+        }
+        
+        .node text {
+            font: 10px sans-serif;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #555;
+            stroke-opacity: 0.4;
+            stroke-width: 1.5px;
+        }
+        
+        .input-box {
+            border: 1px solid #db325733;
+            border-radius: 0.5em;
+            background: #FFF;
+            margin: 10px;
+            padding: 10px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.8em 3em;
+            background: #e99c9c;
+            border-radius: 0.8em;
+            -moz-transition: opacity 0.25s ease-in-out;
+            -webkit-transition: opacity 0.25s ease-in-out;
+            -o-transition: opacity 0.25s ease-in-out;
+            -ms-transition: opacity 0.25s ease-in-out;
+            transition: opacity 0.25s ease-in-out;
+            letter-spacing: 0.20em;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #FFF;
+        }
+        
+        span {
+            display: inline-block;
+            margin-left: 1px;
+            padding: 1em;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            font-size: 1em;
+            text-transform: uppercase;
+            outline: 0;
+            color: #888888;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+        }
+        /* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+        
+        body.loading .modal {
+            overflow: hidden;
+        }
+        /* Anytime the body has the loading class, our
+   modal element will be visible */
+        
+        body.loading .modal {
+            display: block;
+        }
+    </style>
+
+    <script>
+        window.console = window.console || function(t) {};
+    </script>
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+
+</head>
+<body translate="no">
+    <div id="header-wrapper">
+        <div id="header" class="container">
+            <div id="logo">
+                <h1><a href="#">Google Query Suggest :)</a></h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li><a href="graph" accesskey="2" title="">Graph</a></li>
+                    <li><a href="readme" accesskey="3" title="">ReadMe</a></li>
+                    <li class="current_page_item"><a href="sub" accesskey="4" title="">google 搜尋建議</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <span>搜尋想搭配的字</span> <input class='input-box' type="text" id="word" name="word" value="" placeholder="如：是" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script> 
+    <a class='button' id="option">SEARCH GO!</a>
+    <div class="modal">
+        <!-- Place at bottom of page -->
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $body = $("body");
+
+        $(document).on({
+            ajaxStart: function() {
+                $body.addClass("loading");
+            },
+            ajaxStop: function() {
+                $body.removeClass("loading");
+            }
+        });
+        $(document).ready(function() {
+            $("#option").click(function() {
+                var word = document.getElementById("word").value;
+                var sub = word.split(" ");
+                var data = {};
+                data['sub'] = sub;
+                console.log(data);
+                $.ajax({
+                    type: 'POST',
+                    url:"http://127.0.0.1:5000/sub",
+                    // url: "https://graph109.herokuapp.com/sub",
+                    data: JSON.stringify(data), //转化字符串 
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function(data) { //成功的话，得到消息
+                        //alert(data);
+                        var pubs = data;
+                        var diameter = 800;
+
+                        var margin = {
+                                top: 20,
+                                right: 120,
+                                bottom: 20,
+                                left: 120
+                            },
+                            width = diameter,
+                            height = diameter;
+
+                        var i = 0,
+                            duration = 350,
+                            root;
+                        // 更改圓形弧度
+                        var tree = d3.layout.tree().
+                        size([360, diameter / 2 - 80]).
+                        separation(function(a, b) {
+                            return (a.parent == b.parent ? 1 : 2) / a.depth;
+                        });
+
+                        var diagonal = d3.svg.diagonal.radial().
+                        projection(function(d) {
+                            return [d.y, d.x / 180 * Math.PI];
+                        });
+
+                        var svg = d3.select("body").append("svg").
+                        attr("width", width).
+                        attr("height", height).
+                        append("g").
+                        attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+                        root = pubs;
+                        root.x0 = height / 2;
+                        root.y0 = 0;
+
+                        //root.children.forEach(collapse); // start with all children collapsed
+                        update(root);
+
+                        d3.select(self.frameElement).style("height", "800px");
+
+                        function update(source) {
+
+                            // Compute the new tree layout.
+                            var nodes = tree.nodes(root),
+                                links = tree.links(nodes);
+
+                            // Normalize for fixed-depth.
+                            nodes.forEach(function(d) {
+                                d.y = d.depth * 80;
+                            });
+
+                            // Update the nodes…
+                            var node = svg.selectAll("g.node").
+                            data(nodes, function(d) {
+                                return d.id || (d.id = ++i);
+                            });
+
+                            // Enter any new nodes at the parent's previous position.
+                            var nodeEnter = node.enter().append("g").
+                            attr("class", "node")
+                                //.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+                                .on("click", click);
+
+                            nodeEnter.append("circle").
+                            attr("r", 1e-6).
+                            style("fill", function(d) {
+                                return d._children ? "lightsteelblue" : "#fff";
+                            });
+
+                            nodeEnter.append("text").
+                            attr("x", 10).
+                            attr("dy", ".35em").
+                            attr("text-anchor", "start")
+                                //.attr("transform", function(d) { return d.x < 180 ? "translate(0)" : "rotate(180)translate(-" + (d.name.length * 8.5)  + ")"; })
+                                .text(function(d) {
+                                    return d.name;
+                                }).
+                            style("fill-opacity", 1e-6);
+
+                            // Transition nodes to their new position.
+                            var nodeUpdate = node.transition().
+                            duration(duration).
+                            attr("transform", function(d) {
+                                return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
+                            });
+
+                            nodeUpdate.select("circle").
+                            attr("r", 4.5).
+                            style("fill", function(d) {
+                                return d._children ? "lightsteelblue" : "#fff";
+                            });
+
+                            nodeUpdate.select("text").
+                            style("fill-opacity", 1).
+                            attr("transform", function(d) {
+                                return d.x ? "translate(0)" : "rotate(180)translate(-" + (d.name.length + 50) + ")";
+                            });
+
+                            // TODO: appropriate transform
+                            var nodeExit = node.exit().transition().
+                            duration(duration)
+                                //.attr("transform", function(d) { return "diagonal(" + source.y + "," + source.x + ")"; })
+                                .remove();
+
+                            nodeExit.select("circle").
+                            attr("r", 1e-6);
+
+                            nodeExit.select("text").
+                            style("fill-opacity", 1e-6);
+
+                            // Update the links…
+                            var link = svg.selectAll("path.link").
+                            data(links, function(d) {
+                                return d.target.id;
+                            });
+
+                            // Enter any new links at the parent's previous position.
+                            link.enter().insert("path", "g").
+                            attr("class", "link").
+                            attr("d", function(d) {
+                                var o = {
+                                    x: source.x0,
+                                    y: source.y0
+                                };
+                                return diagonal({
+                                    source: o,
+                                    target: o
+                                });
+                            });
+
+                            // Transition links to their new position.
+                            link.transition().
+                            duration(duration).
+                            attr("d", diagonal);
+
+                            // Transition exiting nodes to the parent's new position.
+                            link.exit().transition().
+                            duration(duration).
+                            attr("d", function(d) {
+                                var o = {
+                                    x: source.x,
+                                    y: source.y
+                                };
+                                return diagonal({
+                                    source: o,
+                                    target: o
+                                });
+                            }).
+                            remove();
+
+                            // Stash the old positions for transition.
+                            nodes.forEach(function(d) {
+                                d.x0 = d.x;
+                                d.y0 = d.y;
+                            });
+                        }
+
+                        // Toggle children on click.
+                        function click(d) {
+                            if (d.children) {
+                                d._children = d.children;
+                                d.children = null;
+                            } else {
+                                d.children = d._children;
+                                d._children = null;
+                            }
+
+                            update(d);
+                        }
+
+                        // Collapse nodes
+                        function collapse(d) {
+                            if (d.children) {
+                                d._children = d.children;
+                                d._children.forEach(collapse);
+                                d.children = null;
+                            }
+                        }
+                        // console.log(data);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

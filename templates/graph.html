@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+    <!-- <link href="default.css" rel="stylesheet" type="text/css" media="all" /> -->
+    <!-- <link href="fonts.css" rel="stylesheet" type="text/css" media="all" /> -->
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='default.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='fonts.css') }}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css">  -->
+
+    <title>Graph</title>
+    <style type="text/css">
+        #viz {
+            /* width: 100%; */
+            height: 560px;
+        }
+    </style>
+
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- ginger's -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="fSelect.js"></script> -->
+    <script>
+        $(function() {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 486,
+                values: [1, 486],
+                slide: function(event, ui) {
+                    $("#thickness_visible").val("\t " + ui.values[0] + " ~ " + ui.values[1])
+                    $("#thickness").val(">" + ui.values[0] + " and r.出現次數<" + ui.values[1])
+                        // $('#thickness-small').val(ui.values[0]);
+                        // $('#thickness-big').val(ui.values[1]);
+                }
+            });
+        });
+
+        $(function() {
+            $("#slider-range-node").slider({
+                range: true,
+                min: 0,
+                max: 60,
+                values: [1, 60],
+                slide: function(event, ui) {
+                    $("#size_visible").val("\t\t" + ui.values[0] + " ~ " + ui.values[1]);
+                    $("#size").val(">" + ui.values[0] + " and x.篇數數量<" + ui.values[1]);
+                    // $('#node-small').val(ui.values[0]);
+                    // $('#node-big').val(ui.values[1]);
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="header-wrapper">
+        <div id="header" class="container">
+            <div id="logo">
+                <h1><a href="#">Serach For SEO :)</a></h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li class="current_page_item"><a href="" accesskey="2" title="">Graph</a></li>
+                    <li><a href="readme" accesskey="3" title="">ReadMe</a></li>
+                    <li><a href="sub" accesskey="4" title="">google 搜尋建議</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="outter">
+        <div class="flex-container" id="featured-wrapper">
+            <div class="box-inner">
+                <span>篩選 詞彙</span> <input class='input-box' type="text" id="word" name="word" value="" placeholder="如：益生菌" />
+                <span>篩選 詞彙(模糊比對)</span><input class='input-box' type="text" id="fuzzy_word" name="fuzzy_word" value="" placeholder="如：益生菌" />
+                <span>篩選 tfidf 百分比</span><input class='input-box' type="text" id="tfidf" name="tfidf" value="" placeholder="如：> 0.5" />
+
+            </div>
+            <div class="inner">
+                <div class="slider-one">
+                    <div id="temp-1">
+                        <p>篩選 節點大小</p>
+                        <span class="tooltiptext">該詞彙出現的網站總篇數</span>
+                    </div>
+                    <div class="inbox">
+                        <div class="inner-box">
+                            <div class="slider" id="slider-range-node"></div>
+                            <p id="size"></p>
+                        </div>
+                        <div class="word">
+                            <input type="text" id="size_visible" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-two">
+                    <div id="temp-2">
+                        <p>篩選 關聯粗細</p>
+                        <span class="tooltiptext">該詞彙在該頁出現的總次數</span>
+                    </div>
+                    <div class="inbox2">
+                        <div class="inner-box">
+                            <div class="slider" id="slider-range"></div>
+                            <p id="thickness"></p>
+                        </div>
+                        <div class="word2">
+                            <input type="text" id="thickness_visible" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-two checkbox">
+                    <div class="two-checkbox">
+                        <span>篩選 RankPage</span>
+                        <p></p>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="1" checked> 1
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="2" checked> 2
+                            </label>
+                        <label>
+                            <input type="checkbox" name="checkbox" value="3" checked> 3
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="4" checked> 4
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="5" checked> 5
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="6" checked> 6
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="7" checked> 7
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="8" checked> 8
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="9" checked> 9
+                            </label>
+                        <label>
+                                <input type="checkbox" name="checkbox" value="10" checked> 10
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="#" id="option" class="button">Search GO!</a>
+                <p></p>
+                <button class="button" type="button" onclick="downloadImg()">下載圖片</button>
+            </div>
+            <p></p>
+
+        </div>
+        <div class="rank">
+            <h3>高頻率詞彙 </h3>
+            <p href="#" id="option" class="rank_span">益生菌</p>
+            <p href="#" id="option" class="rank_span">菌種</p>
+            <p href="#" id="option" class="rank_span">乳酸菌</p>
+            <br>
+            <p href="#" id="option" class="rank_span">健康</p>
+            <p href="#" id="option" class="rank_span">好菌</p>
+            <p href="#" id="option" class="rank_span">腸道</p>
+            <p href="#" id="option" class="rank_span">菌株</p>
+            <h3>內文主題推薦 </h3>
+            <p href="#" id="option" class="rank_span">益生菌是什麼</p>
+            <p href="#" id="option" class="rank_span">10款益生菌推薦2020排名</p>
+            <p href="#" id="option" class="rank_span">益生菌功效及作用</p>   
+            <br>
+            <p href="#" id="option" class="rank_span">益生菌品挑選方法</p>
+            <p href="#" id="option" class="rank_span">益生菌怎麼吃</p>
+            <p href="#" id="option" class="rank_span">乳酸菌和益生菌有和差別</p>
+            <h3>Google Trend </h3>
+            <p href="#" id="option" class="rank_span">推薦益生菌</p>
+            <p href="#" id="option" class="rank_span">益生菌ptt</p>
+            <p href="#" id="option" class="rank_span">娘家益生菌</p>
+            <p href="#" id="option" class="rank_span">一家人益生菌</p>
+            <br>
+            <p href="#" id="option" class="rank_span">過敏益生菌</p>
+            <p href="#" id="option" class="rank_span">健康益生菌</p>
+            <p href="#" id="option" class="rank_span">益生菌功效</p>
+        </div>
+    </div>
+
+
+    <div class="box2">
+        <div id="viz"></div>
+    </div>
+    </div>
+
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function downloadImg() {
+            html2canvas(document.getElementById('viz')).then(function(canvas) {
+                document.body.appendChild(canvas);
+                var a = document.createElement('a');
+                a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                a.download = 'image.jpg';
+                a.click();
+            });
+        }
+        $(document).ready(function() {
+            $("#option").click(function() {
+                var word = document.getElementById("word").value;
+                var wordArray = '["' + word.replaceAll(' ', '","') + '"]';
+                var size = document.getElementById("size").value;
+                var thickness = document.getElementById("thickness").value;
+
+                var fuzzy_word = document.getElementById("fuzzy_word").value;
+                var tfidf = document.getElementById("tfidf").value;
+                var tfidf_list = tfidf.split(" ");
+
+                var selected = [];
+                $("[name=checkbox]:checkbox:checked").each(function() {
+                    selected.push($(this).val());
+                });
+                var rank_page = selected.join();
+                var rank_pageArray = '["' + rank_page.replaceAll(',', '","') + '"]';
+
+                var x = "x.name in " + wordArray;
+                var x_size = "x.篇數數量" + size;
+                var r = "r.出現次數" + thickness;
+                var y = "y.name in " + rank_pageArray;
+                var fuzzy_word_list = fuzzy_word.split(" ");
+                var final_fuzzy_word = "x.name=~'.*";
+                var i;
+                for (i = 0; i < fuzzy_word_list.length; i++) {
+                    final_fuzzy_word += fuzzy_word_list[i] + ".*' or x.name=~'.*";
+                }
+                final_fuzzy_word = final_fuzzy_word.slice(0, -15)
+                final_fuzzy_word = '(' + final_fuzzy_word + ')'
+
+
+                if (word == '') {
+                    x = '';
+                };
+                if (y == 'y.name in ["1","2","3","4","5","6","7","8","9","10"]') {
+                    y = ''
+                }
+                if (r == 'r.出現次數undefined') {
+                    r = '';
+                };
+                if (x_size == 'x.篇數數量undefined') {
+                    x_size = '';
+                };
+                if (fuzzy_word == '') {
+                    final_fuzzy_word = '';
+                };
+
+                if (x != '' && final_fuzzy_word != '') {
+                    x = '(' + x + ' or ';
+                    final_fuzzy_word = final_fuzzy_word + ')';
+                } else if (x != '' && (y != '' || r != '' || x_size != '')) {
+                    x = x + ' and ';
+                };
+                if (final_fuzzy_word != '' && (r != '' || y != '' || x_size != '')) {
+                    final_fuzzy_word = final_fuzzy_word + ' and ';
+                };
+                if (r != '' && (y != '' || x_size != '')) {
+                    r = r + ' and ';
+                };
+                if (y != '' && (x_size != '')) {
+                    y = y + ' and ';
+                };
+
+                if (tfidf == '') {
+                    if (x == '' && y == '' && r == '' && x_size == '' && fuzzy_word == '') {
+                        option = 'MATCH p=()-[]->() RETURN p';
+                    } else {
+                        option = "MATCH p = (x)-[r]->(y) WHERE " + x + final_fuzzy_word + r + y + x_size + " RETURN p";
+                    }
+                } else {
+                    if (x == '' && y == '' && r == '' && x_size == '' && fuzzy_word == '') {
+                        option = 'MATCH p = (x)-[r]->(y) WITH percentileCont(r.平均tfidf值,' + tfidf_list[1] + ') AS median MATCH p = (x)-[r]->(y) WHERE r.平均tfidf值' + tfidf_list[0] + ' median RETURN p'
+                    } else {
+                        option = 'MATCH p = (x)-[r]->(y) WITH percentileCont(r.平均tfidf值,' + tfidf_list[1] + ') AS median MATCH p = (x)-[r]->(y) WHERE r.平均tfidf值' + tfidf_list[0] + ' median and ' + x + final_fuzzy_word + r + y + x_size + " RETURN p";
+                    }
+                }
+
+                console.log(option);
+
+                var config = {
+                    container_id: "viz",
+                    server_url: "bolt://52.207.134.182:7687",
+                    server_user: "neo4j",
+                    server_password: "utilization-patches-strut",
+                    labels: {
+                        "word": { //關鍵字
+                            "caption": "name", //名字
+                            "size": "篇數數量", //權重(大小)
+                            "community": "rank_page",
+                            "title_properties": [
+                                "name",
+                                "頁數數量",
+                                "篇數數量"
+                            ]
+                        },
+                        "頁數": { //文章節點
+                            "caption": "name",
+                            "community": "rank_page",
+                            "title_properties": [
+                                "name",
+                                "篇數數量"
+                            ]
+                        }
+                    },
+                    relationships: { //關係
+                        "in": {
+                            "thickness": "出現次數",
+                            "caption": false
+                        }
+                    },
+                    initial_cypher: option,
+                    arrows: true
+                }
+
+                var viz = new NeoVis.default(config);
+                viz.render();
+                console.log(viz);
+            });
+        });
+    </script>
+</body>
+
+</html>
