@@ -1,3 +1,30 @@
+## 資料夾結構說明
+```
+.
+├── Procfile # 部署 Heroku 檔案
+├── README.md
+├── crawler.py # (現在已經無法使用！) 爬取網站，產生益生菌.csv 檔案
+├── flow.drawio # crawler.py 流程
+├── lib
+│   ├── corpus # 語料
+│   ├── file # output 檔案和爬取 log
+│   └── json # crawler.py 過程中儲存的資訊
+├── main.py # 視覺化主程式(Flask)
+├── requirements.txt # 部署 Heroku 檔案
+├── runtime.txt # 部署 Heroku 檔案
+├── static # 前端相關檔案
+│   ├── default.css
+│   ├── fonts
+│   ├── fonts.css
+│   ├── images
+│   └── pic
+├── sum.py # 統計節點及邊的資訊，產生 sum.csv(之後要丟進 Neo4j 的資料)
+└── templates # 前端相關檔案
+    ├── graph.html
+    ├── information.html
+    ├── read_me.html
+    └── sub.html
+```
 ## Usage
 - [**Neo4j Sandbox**](https://neo4j.com/sandbox/)
     ```
