@@ -126,7 +126,7 @@ def request_soup(url,opt,headers = None, rank_page = None):
             time.sleep(5)
 
             if name == 'nt': 
-                os.system('rasdial 寬頻連線 75952444@hinet.net qjtwhkbb')
+                os.system('rasdial 寬頻連線 <your hinet.net>')
         
             else : 
                 _ = system('scutil --nc start PPPoE')
